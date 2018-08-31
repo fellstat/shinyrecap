@@ -1,7 +1,7 @@
 
 
 library(shiny)
-library(ShinyPopSize)
+library(shinyrecap)
 library(DT)
 library(caret)
 library(Rcapture)                      # model capture recapture data (loglinear model)
@@ -13,6 +13,13 @@ library(VGAM)
 library(data.table)
 library(CARE1)                         # model capture recapture data (sample coverage)
 library(dga)
+library(future)
+library(promises)
+plan(multiprocess)
+
+data(graphs3)
+data(graphs4)
+data(graphs5)
 
 shinyServer(function(input, output, session) {
   CRdata <- reactive({
@@ -206,7 +213,7 @@ shinyServer(function(input, output, session) {
     if (input$DataType == "Aggregate") {
       dat <- disaggregate(dat[,-ncol(dat)], dat[[ncol(dat)]])
     }
-    result <- estN.pair(as.record(dat1))
+    result <- estN.pair(as.record(dat))
     result <- result[,-2]
     colnames(result)<- c("Abundance Estimate", "se", "95% CI Lower","95% CI Upper")
     result
@@ -262,49 +269,137 @@ shinyServer(function(input, output, session) {
   })
 
   output$dgaPrior <- renderPlot({
+    if (is.null(CRdata())) {
+      return(NULL)
+    }
     prior <- priorDist()
-    x <- prior$x
-    values <- prior$values
-    if(input$dgaPriorType == "lnorm")
-      titl <- "Log-normal Prior"
-    else
-      titl <- "Non-informative Prior (p(x) ~ 1/ (Population Size - Sample Size))"
-    lower90 <- x[min(which(cumsum(values) >= .1))]
-    upper90 <- x[min(which(cumsum(values) >= .9))]
-    p <- ggplot() +
-      geom_line(aes(x=x,y=values)) +
-      geom_vline(xintercept = lower90, color="red") +
-      geom_vline(xintercept = upper90, color="red") +
-      xlab("Population Size") +
-      ylab("Prior Probability") +
-      ggtitle(titl)
-    xlim(c(0,max(x)))
-    print(p)
+    dgaPriorType <- input$dgaPriorType
+    future({
+      x <- prior$x
+      values <- prior$values
+      if(dgaPriorType == "lnorm")
+        titl <- "Log-normal Prior"
+      else
+        titl <- "Non-informative Prior (p(x) ~ 1/ (Population Size - Sample Size))"
+      lower90 <- x[min(which(cumsum(values) >= .1))]
+      upper90 <- x[min(which(cumsum(values) >= .9))]
+      p <- ggplot() +
+        geom_line(aes(x=x,y=values)) +
+        geom_vline(xintercept = lower90, color="red") +
+        geom_vline(xintercept = upper90, color="red") +
+        xlab("Population Size (red lines = 10th and 90th percentiles)") +
+        ylab("Prior Probability") +
+        ggtitle(titl) +
+        xlim(c(0,max(x)))
+    }) %...>% print
   })
 
   output$dgaCumPrior <- renderPlot({
+    if (is.null(CRdata())) {
+      return(NULL)
+    }
     prior <- priorDist()
-    x <- prior$x
-    values <- prior$values
-    if(input$dgaPriorType == "lnorm")
-      titl <- "Log-normal Prior"
+    dgaPriorType <- input$dgaPriorType
+    future({
+
+      x <- prior$x
+      values <- prior$values
+      if(dgaPriorType == "lnorm")
+        titl <- "Log-normal Prior"
+      else
+        titl <- "Non-informative Prior (p(x) ~ 1/ (Population Size - Sample Size))"
+      lower90 <- x[min(which(cumsum(values) >= .1))]
+      upper90 <- x[min(which(cumsum(values) >= .9))]
+      p <- ggplot() +
+        geom_line(aes(x=x,y=cumsum(values))) +
+        xlab("Population Size") +
+        ylab("Prior Cumulative Probability") +
+        ggtitle(titl) +
+        xlim(c(0,max(x)))
+    }) %...>% print
+  })
+
+  dgaPriorValid <- reactive({
+    if(input$dgaPriorType == "lnorm"){
+      if(input$dgaPrior90 <= input$dgaPriorMedian){
+        return("Prior 90th percentile must be larger than the median")
+      }
+      if(input$dgaNMax <= input$dgaPrior90){
+        return("Maximum population size percentile must be larger than the 90th percentile")
+      }
+    }
+    ""
+  })
+
+
+  dga <- reactive({
+    if (is.null(CRdata())) {
+      return(NULL)
+    }
+    if(dgaPriorValid() != ""){
+      showNotification(dgaPriorValid())
+      return(NULL)
+    }
+    dat <- CRdata()
+    if (input$DataType == "Aggregate") {
+      dat <- disaggregate(dat[,-ncol(dat)], dat[[ncol(dat)]])
+    }
+    if(ncol(dat) > 5){
+      showNotification("Bayesian model averaging can only be performed on <= 5 sources")
+      return(NULL)
+    }
+    if(ncol(dat) == 3)
+      graphs <- graphs3
+    else if(ncol(dat) == 4)
+      graphs <- graphs4
     else
-      titl <- "Non-informative Prior (p(x) ~ 1/ (Population Size - Sample Size))"
-    lower90 <- x[min(which(cumsum(values) >= .1))]
-    upper90 <- x[min(which(cumsum(values) >= .9))]
-    p <- ggplot() +
-      geom_line(aes(x=x,y=cumsum(values))) +
-      xlab("Population Size") +
-      ylab("Prior Cumulative Probability") +
-      ggtitle(titl)
-    xlim(c(0,max(x)))
-    print(p)
+      graphs <- graphs5
+    nobs <- nrow(dat)
+    rec <- make.strata(dat, locations=rep("a",nrow(dat)))$overlap.counts
+    rec <- array(rec, dim=rep(2, ncol(dat)))
+
+    mu <- log(input$dgaPriorMedian)
+    ssd <- (log(input$dgaPrior90) - mu) / qnorm(.9)
+    nmax <- input$dgaNMax - nobs
+    delta <- input$dgaPriorDelta
+    prior <- priorDist()
+    future({
+      x <- prior$x
+      post <- bma.cr(rec,
+                   delta=delta,
+                   Nmissing=x - nobs,
+                   logprior = log(prior$values),
+                   graphs = graphs)
+      list(prior=prior, post=post)
+    })
   })
 
-  output$dga <- renderTable({
-    data.frame(1)
+  output$dgaTable <- renderTable({
+    dga <- dga()
+    if(is.null(dga))
+      return(NULL)
+    dga <- value(dga)
+    postN <- colSums(dga$post)
+    x <- dga$prior$x
+    mn <- sum(x * postN)
+    med <- x[which(cumsum(postN) > .5)[1]]
+    lower <- x[which(cumsum(postN) > .025)[1]]
+    upper <- x[which(cumsum(postN) > .975)[1]]
+    result <- data.frame(mn, med, lower, upper)
+    names(result) <- c("Mean","Median","95% Lower","95% Upper")
+    result
   })
 
-
+  output$dgaPlot <- renderPlot({
+    dga <- dga()
+    if(is.null(dga))
+      return(NULL)
+    dga <- value(dga)
+    x <- dga$prior$x
+    post <- dga$post
+    postN <- colSums(dga$post)
+    ind <- cumsum(postN)  < .995
+    plotPosteriorN(post[,ind], x[ind])
+  })
 
 })

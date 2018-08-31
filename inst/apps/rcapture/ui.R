@@ -1,7 +1,7 @@
 
 
 library(shiny)
-
+library(shinycssloaders)
 source("ui-intro.R")
 source("ui-import.R")
 source("ui-loglinear.R")
