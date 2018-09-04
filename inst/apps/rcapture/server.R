@@ -12,6 +12,7 @@ library(MASS)
 library(VGAM)
 library(data.table)
 library(CARE1)                         # model capture recapture data (sample coverage)
+library(LCMCR)
 library(dga)
 library(future)
 library(promises)
@@ -25,6 +26,7 @@ source("server-import.R")
 source("server-loglinear.R")
 source("server-pairwise.R")
 source("server-dga.R")
+source("server-lcmcr.R")
 
 shinyServer(function(input, output, session) {
 
@@ -35,5 +37,7 @@ shinyServer(function(input, output, session) {
   serverPairwise(input, output, session, getData)
 
   serverDga(input, output, session, getData)
+
+  serverLcmcr(input, output, session, getData)
 
 })

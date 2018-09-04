@@ -10,7 +10,7 @@ serverPairwise <- function(input, output, session, getData){
     }
     result <- estN.pair(as.record(dat))
     result <- result[,-2]
-    colnames(result)<- c("Abundance Estimate", "se", "95% CI Lower","95% CI Upper")
+    colnames(result)<- c("Population Size", "se", "95% CI Lower","95% CI Upper")
     result
   },rownames = TRUE)
 

@@ -2,7 +2,7 @@
 
 
 
-renderDGA <- function() {
+renderDga <- function() {
   tabPanel(
     "Bayesian Model Averaging",
     sidebarLayout(
@@ -13,8 +13,7 @@ renderDGA <- function() {
                      1,
                      min = 0,
                      max = 1000000),
-        br(),
-        br(),
+        hr(),
         h4("Prior Population Size"),
         numericInput(
           "dgaNMax",
@@ -47,6 +46,12 @@ renderDGA <- function() {
             min = 0,
             max = 1000000
           )
+        ),
+        hr(),
+        checkboxInput(
+          "dgaSaturated",
+          "Include Saturated Model",
+          FALSE
         )
       ),
       mainPanel(
@@ -59,13 +64,24 @@ renderDGA <- function() {
             withSpinner(plotOutput("dgaCumPrior"))
           ),
           tabPanel(
-            "Posterior",
+            "Posterior Population Size",
+            textOutput("dgaSaturatedWarning"),
+            tags$head(
+              tags$style("#dgaSaturatedWarning{color: red;
+                font-size: 20px;
+                font-style: italic;}"
+              )
+            ),
             br(),
             h3("Posterior Summaries"),
             withSpinner(tableOutput("dgaTable")),
             br(),
             h3("Posterior Distribution"),
             withSpinner(plotOutput("dgaPlot"))
+          ),
+          tabPanel(
+            "Posterior Model Probabilities",
+            withSpinner(tableOutput("dgaModelPost"))
           )
         )
       )

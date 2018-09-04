@@ -153,12 +153,37 @@ serverDga <- function(input, output, session, getData){
     })
   })
 
+  output$dgaSaturatedWarning <- renderText({
+    dga <- dga()
+    if(is.null(dga))
+      return(NULL)
+    dga <- value(dga)
+    post <- dga$post
+    psat <- sum(post[nrow(post), ])
+    if(psat >= .15){
+      inc <- ""
+      if(!input$dgaSaturated)
+        inc <- " (not included in estimates) "
+      return(paste0("Warning: The posterior probability of the saturated model",
+                    inc,
+                    " is ",
+                    round(psat*100),
+                    "%. Estimates may be unreliable."))
+    }
+    return(NULL)
+  })
+
   output$dgaTable <- renderTable({
     dga <- dga()
     if(is.null(dga))
       return(NULL)
     dga <- value(dga)
-    postN <- colSums(dga$post)
+    post <- dga$post
+    if(!input$dgaSaturated){
+      post <- post[-nrow(post), , drop=FALSE]
+    }
+    postN <- colSums(post)
+    postN <- postN / sum(postN)
     x <- dga$prior$x
     mn <- sum(x * postN)
     med <- x[which(cumsum(postN) > .5)[1]]
@@ -176,8 +201,52 @@ serverDga <- function(input, output, session, getData){
     dga <- value(dga)
     x <- dga$prior$x
     post <- dga$post
-    postN <- colSums(dga$post)
+    if(!input$dgaSaturated){
+      post <- post[-nrow(post), , drop=FALSE]
+    }
+    postN <- colSums(post)
+    postN <- postN / sum(postN)
     ind <- cumsum(postN)  < .995
     plotPosteriorN(post[,ind], x[ind])
+  })
+
+  output$dgaModelPost <- renderTable({
+    dga <- dga()
+    if(is.null(dga))
+      return(NULL)
+    dga <- value(dga)
+    x <- dga$prior$x
+    post <- dga$post
+
+    dat <- getData()
+    if (input$DataType == "Aggregate") {
+      dat <- disaggregate(dat[,-ncol(dat)], dat[[ncol(dat)]])
+    }
+    if(ncol(dat) > 5){
+      showNotification("Bayesian model averaging can only be performed on <= 5 sources")
+      return(NULL)
+    }
+    if(ncol(dat) == 3)
+      graphs <- graphs3
+    else if(ncol(dat) == 4)
+      graphs <- graphs4
+    else
+      graphs <- graphs5
+    if(!input$dgaSaturated){
+      post <- post[-nrow(post), , drop=FALSE]
+      graphs <- graphs[-length(graphs)]
+    }
+    mp <- rowSums(post)
+    means <- apply(post, 1, function(p){
+      p <- p / sum(p)
+      sum(p * x)
+    })
+    mp <- mp / sum(mp)
+    mp <- round(mp * 100, 3)
+
+    data.frame(Interaction=formatGraphs(graphs),
+               `Posterior Probability (%)` = mp,
+               `Expected Pop. Size` = means,
+               check.names=FALSE)
   })
 }

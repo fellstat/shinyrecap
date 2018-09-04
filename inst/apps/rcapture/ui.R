@@ -6,6 +6,7 @@ source("ui-intro.R")
 source("ui-import.R")
 source("ui-loglinear.R")
 source("ui-dga.R")
+source("ui-lcmcr.R")
 source("ui-pairwise.R")
 
 
@@ -23,7 +24,8 @@ shinyUI(
       "Analysis",
       tabsetPanel(
         renderLogLinear(),
-        renderDGA(),
+        renderDga(),
+        renderLcmcr(),
         renderPairwise()
       )
     )

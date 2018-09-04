@@ -17,3 +17,15 @@ disaggregate <- function(dat, counts){
   as.data.frame(result)
 }
 
+
+#' Format graphs
+#' @param graphs the graphs
+#' @export
+formatGraphs <- function(graphs){
+  sapply(graphs, function(x){
+    v <- sapply(x$C, function(y){
+      paste0(y, collapse=" - ")
+    })
+    paste0(v, collapse=" | ")
+  })
+}
