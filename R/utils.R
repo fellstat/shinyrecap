@@ -29,3 +29,43 @@ formatGraphs <- function(graphs){
     paste0(v, collapse=" | ")
   })
 }
+
+
+#' Perform LCMCR sampling with a monitor function
+#' @param object the samples
+#' @param burnin MCMC burn in
+#' @param samples number of samples
+#' @param thinning MCMC thinning
+#' @param clear buffer clear buffer of object
+#' @param output output progress
+#' @param nMonitorBreaks number of times to call the monitor function
+#' @param monitorFunc A function called nMonitorBreaks times taking the number of samples to be taken, and the total samples
+#' @details
+#' An edited version of \code{lcmCR_PostSampl}
+#' @export
+lcmcrSample <- function(object, burnin = 10000, samples = 1000, thinning = 10,
+                        clear_buffer = FALSE, output=TRUE,
+                        nMonitorBreaks=100,
+                        monitorFunc = function(subs, tot){}){
+  object$Update(burnin, output)
+  object$Change_SubSamp(thinning)
+  object$Change_Trace_Length(samples)
+  if (!("n0" %in% object$Get_Trace_List())) {
+    object$Set_Trace("n0")
+  }
+  if (clear_buffer) {
+    object$Reset_Traces()
+  }
+  object$Activate_Tracing()
+  tot <- samples * thinning
+  breaks <- ceiling(seq(from=1, to = tot, length.out=nMonitorBreaks))
+  partN <- diff(c(0,breaks))
+  for(i in 1:length(partN)){
+    if(partN[i] > 0){
+      object$Update(partN[i], output)
+      monitorFunc(partN[i], tot)
+    }
+  }
+  N <- object$Get_Trace("n0") + object$n
+  return(as.numeric(N))
+}

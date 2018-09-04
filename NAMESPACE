@@ -3,3 +3,4 @@
 export(disaggregate)
 export(formatGraphs)
 export(launchShinyPopSize)
+export(lcmcrSample)
