@@ -36,7 +36,7 @@ formatGraphs <- function(graphs){
 #' @param burnin MCMC burn in
 #' @param samples number of samples
 #' @param thinning MCMC thinning
-#' @param clear buffer clear buffer of object
+#' @param clear_buffer buffer clear buffer of object
 #' @param output output progress
 #' @param nMonitorBreaks number of times to call the monitor function
 #' @param monitorFunc A function called nMonitorBreaks times taking the number of samples to be taken, and the total samples

@@ -41,7 +41,7 @@ serverLcmcr <- function(input, output, session, getData){
       }
 
       sampler <- lcmCR(d2, tabular = FALSE, K = K, a_alpha = shape,
-                          b_alpha = invScale, seed = "auto", buffer_size = samples,
+                          b_alpha = invScale, seed = "auto", buffer_size = samples*thinning + burnin + 1,
                           thinning = thinning)
       post <- lcmcrSample(sampler, burnin = burnin,
                                    samples = samples, thinning = thinning,

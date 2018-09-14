@@ -17,6 +17,7 @@ library(dga)
 library(ipc)
 library(future)
 library(promises)
+library(coda)
 plan(multiprocess)
 #plan(sequential)
 

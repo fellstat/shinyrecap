@@ -17,13 +17,13 @@ lcmcrSample(object, burnin = 10000, samples = 1000, thinning = 10,
 
 \item{thinning}{MCMC thinning}
 
+\item{clear_buffer}{buffer clear buffer of object}
+
 \item{output}{output progress}
 
 \item{nMonitorBreaks}{number of times to call the monitor function}
 
 \item{monitorFunc}{A function called nMonitorBreaks times taking the number of samples to be taken, and the total samples}
-
-\item{clear}{buffer clear buffer of object}
 }
 \description{
 Perform LCMCR sampling with a monitor function
