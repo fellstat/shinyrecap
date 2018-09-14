@@ -75,7 +75,6 @@ shinyServer(function(input, output, session) {
     fut <- catch(fut,
                  function(e){
                    sims(NULL)
-                   print(e$message)
                    showNotification(e$message)
                  })
 
