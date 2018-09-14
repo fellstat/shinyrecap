@@ -3,30 +3,33 @@ serverLogLinear <- function(input, output, session, getData){
     if (is.null(getData())) {
       return(NULL)
     }
-    if (input$DataType == "Aggregate") {
-      # If the user uploads an aggregate data, use teh model below
-      freqstat <- descriptive(getData(), dfreq = TRUE)
-    } else if (input$DataType == "Individual") {
-      # If the user uploads individual level data, use the model below
-      freqstat <- descriptive(getData(), dfreq = FALSE)
-    }
+    freqstat <- descriptive(getData(TRUE), dfreq = FALSE)
     print(freqstat)                               # Print descriptive stats
   })
 
 
   # Output: abundance-using loglinear model(Rcapture)
   #--------------------
-  output$Abund <- renderPrint({
+  output$Abund <- renderTable({
     if (is.null(getData())) {
       return(NULL)
     }
-    if (input$DataType == "Aggregate") {
-      logli <- closedp(getData(), dfreq = TRUE) # All possible models
-    } else if (input$DataType == "Individual") {
-      logli <- closedp(getData(), dfreq = FALSE)
+    logli <- closedp(getData(TRUE), dfreq = FALSE)
+    normTFit <- try(closedpCI.t(getData(TRUE), m="Mth",h="Normal"))
+    normFit <- try(closedpCI.t(getData(TRUE), m="Mh",h="Normal"))
+    results <- as.data.frame(logli$results[1:10,-c(3,4,7)])
+    colnames(results)[1] <- "Population Size"
+    if(!inherits(normTFit, "try-error")){
+      results <- rbind(results, normFit$results[,c(1,2,7,8)])
+      row.names(results)[11] <- "Mth Normal"
     }
-    ind <- which.min(logli$results[1:10,5])
-    modnm <- row.names(logli$results)[ind]
+    if(!inherits(normFit, "try-error")){
+      results <- rbind(results[1:6,], normFit$results[,c(1,2,7,8)],results[7:nrow(results),])
+      row.names(results)[7] <- "Mh Normal"
+    }
+
+    ind <- which.min(results[,3])
+    modnm <- row.names(results)[ind]
     modnm <- strsplit(modnm, " ")[[1]]
     m <- modnm[1]
     updateRadioButtons(session, "OutputSelect", selected = m)
@@ -38,24 +41,15 @@ serverLogLinear <- function(input, output, session, getData){
                   Gamma3.5 = "Gamma")
       updateRadioButtons(session, "Hetero", selected = h)
     }
-    MOutPut <-
-      setDT(as.data.frame(logli$results), keep.rownames = TRUE)[] # Extract model outputs
-    colnames(MOutPut)[1] <- "Model"
-    # MOutPut$CI95<-paste((round((MOutPut$abundance-MOutPut$stderr*1.96),2)), # Compute CI using stand error
-    #                     round((MOutPut$abundance+ MOutPut$stderr*1.96),2), sep=",")
-    print(MOutPut[,-c(4, 5, 8)], row.names = F, digits = 4)
-  })
+    results
+  }, rownames = TRUE)
 
 
   output$tot1 <- renderPrint({
     if (is.null(getData())) {
       return(NULL)
     }
-    if (input$DataType == "Aggregate") {
-      logli <- closedp(getData(), dfreq = TRUE) # All possible models
-    } else if (input$DataType == "Individual") {
-      logli <- closedp(getData(), dfreq = FALSE)
-    }
+    logli <- closedp(getData(TRUE), dfreq = FALSE)
     cat(noquote(paste (
       "Total number of captured units =", logli$n
     )), "\n") # just  remove the squared bracket from the output
@@ -71,14 +65,19 @@ serverLogLinear <- function(input, output, session, getData){
     }
     if(is.null(input$OutputSelect))
       return(NULL)
+    #browser()
     agg <- input$DataType == "Aggregate"
-    Conf.Int <- closedpCI.t(getData(),
+    ci <- closedpCI.t(getData(),
                             dfreq = agg,
                             m = input$OutputSelect,
-                            h = input$Hetero)$CI[1:3]
-    names(Conf.Int)[1:3] <-
-      c("Abundance", "Lower 95%", "Upper 95%")
-    print(Conf.Int)
+                            h = input$Hetero)
+    if(input$Hetero == "Normal")
+      ci <- ci$results[c(1,3,4)]
+    else
+      ci <- ci$CI[1:3]
+    names(ci)<-
+      c("Population Size", "Lower 95%", "Upper 95%")
+    print(ci)
   })
 
 
@@ -88,14 +87,11 @@ serverLogLinear <- function(input, output, session, getData){
     }
     if(is.null(input$OutputSelect))
       return(NULL)
-    if (input$DataType == "Aggregate") {
-      Conf.Intp <-
-        closedpCI.t(getData(), dfreq = TRUE, m = input$OutputSelect, h = input$Hetero)
-    } else if (input$DataType == "Individual") {
-      Conf.Intp <-
-        closedpCI.t(getData(), dfreq = FALSE, m = input$OutputSelect, h = input$Hetero)
-
-    }
+    Conf.Intp <-
+      closedpCI.t(getData(TRUE),
+                  dfreq = FALSE,
+                  m = input$OutputSelect,
+                  h = input$Hetero)
 
     plotCI(
       Conf.Intp,
@@ -115,15 +111,7 @@ serverLogLinear <- function(input, output, session, getData){
     if (is.null(getData())) {
       return(NULL)
     }
-    if (input$DataType == "Aggregate") {
-      freqstat1 <-
-        descriptive(getData(), dfreq = TRUE)   # explore heterogeneity (aggregate data)
-
-    } else if (input$DataType == "Individual") {
-      freqstat1 <-
-        descriptive(getData(), dfreq = FALSE)   # explore heterogeneity (individual data)
-
-    }
+    freqstat1 <- descriptive(getData(TRUE), dfreq = FALSE)
     plot(freqstat1)
 
   })

@@ -1,7 +1,8 @@
 
 
 serverImport <- function(input, output, session){
-  getData <- reactive({
+
+  data <- reactive({
     file1 <- input$file
     if (is.null(file1)) {
       return(NULL)
@@ -14,6 +15,8 @@ serverImport <- function(input, output, session){
     )
     nc <- ncol(dat)
     for(i in 1:nc){
+      if(!is.numeric(dat[[i]]))
+        dat[[i]] <- dat[[i]] == max(dat[[i]])
       dat[[i]] <- as.integer(dat[[i]])
     }
 
@@ -26,6 +29,13 @@ serverImport <- function(input, output, session){
     }
     dat
   })
+
+  getData <- function(disag=FALSE){
+    df <- data()
+    if(disag && input$DataType == "Aggregate")
+      df <- disaggregate(df[-length(df)],df[[length(df)]])
+    df
+  }
 
   # Output table
   #--------------------

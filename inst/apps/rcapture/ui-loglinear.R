@@ -24,7 +24,8 @@ renderLogLinearSidebar <- function() {
           "Lower Bound" = "Chao",
           "Poisson" = "Poisson",
           "Darroch" = "Darroch",
-          "Gamma" = "Gamma"
+          "Gamma" = "Gamma",
+          "Normal" = "Normal"
         ),
         selected = 'Chao'
       )
@@ -40,7 +41,12 @@ renderLogLinear <- function() {
     tabsetPanel(
       tabPanel(
         "Model Comaprison",
-        verbatimTextOutput("Abund")
+        h4("Population Size Estimates by Model:"),
+        tableOutput("Abund"),
+        p("M0 : All captures have the same probability and individuals are uniform."),
+        p("Mt : Captures may have different probabilities and individuals are uniform."),
+        p("Mh : All captures have the same probability and individuals may be heterogeneous."),
+        p("Mth : Captures may have different probabilities and individuals may be heterogeneous.")
       ),
       tabPanel("Model Selection",
         sidebarLayout(
