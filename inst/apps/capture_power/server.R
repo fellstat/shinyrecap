@@ -129,7 +129,7 @@ shinyServer(function(input, output, session) {
     samps <- data.frame(probCap=rep(NA, N * t), capture=rep(NA, N * t))
     for(i in 1:t){
       het <- simulateHeteroNormal(N,input$hetero)
-      cap <- .simulateSingleCapture(het, p[i])
+      cap <- shinyrecap:::.simulateSingleCapture(het, p[i])
       pc <- attr(cap,"pc")
       samps$probCap[(N * (i-1) + 1):(N*i)] <- pc
       samps$capture[(N * (i-1) + 1):(N*i)] <- i

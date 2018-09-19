@@ -19,7 +19,7 @@ shinyUI(fluidPage(
        actionButton("removeList","Remove"),
        hr(),
        h4("Heterogeneity"),
-       selectInput("htype","Type",list("None","Normal", "Gamma")),
+       selectInput("htype","Type",list("None","Normal")),
        conditionalPanel("input.htype == 'Normal'",
          numericInput("hetero",
                       "Odds ratio of capture of 90th percentile most likely to be captured compared to average",
