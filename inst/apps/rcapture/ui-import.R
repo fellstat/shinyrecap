@@ -10,7 +10,7 @@ renderImportDataPanel <- function() {
                  label = 'Header',
                  value = TRUE
                ),
-               checkboxInput(inputId = "stringAsFactors", "StringAsFactors", FALSE),
+               #checkboxInput(inputId = "stringAsFactors", "StringAsFactors", FALSE),
                radioButtons(
                  inputId = 'DataType',
                  label = 'Data Type',

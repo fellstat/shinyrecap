@@ -11,7 +11,7 @@ serverImport <- function(input, output, session){
       file = file1$datapath,
       sep = input$sep,
       header = input$header,
-      stringsAsFactors = input$stringAsFactors
+      stringsAsFactors = FALSE
     )
     nc <- ncol(dat)
     for(i in 1:nc){

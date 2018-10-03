@@ -40,7 +40,7 @@ renderLogLinear <- function() {
     h3("Log-linear Abundance Analysis"),
     tabsetPanel(
       tabPanel(
-        "Model Comaprison",
+        "Model Comparison",
         h4("Population Size Estimates by Model:"),
         tableOutput("Abund"),
         p("M0 : All captures have the same probability and individuals are uniform."),

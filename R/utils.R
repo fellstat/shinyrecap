@@ -9,8 +9,10 @@ disaggregate <- function(dat, counts){
     r1 <- r[-length(r)]
     n <- r[length(r)]
     d <- as.data.frame(matrix(NA, nrow=n, ncol=length(r1)))
-    for(i in seq_along(r1)){
-      d[,i] <- r1[i]
+    if(n > 0){
+      for(i in seq_along(r1)){
+        d[,i] <- r1[i]
+      }
     }
     d
   }))
