@@ -101,7 +101,7 @@ shinyServer(function(input, output, session) {
     p <- c(.5,.6,.7,.8,.9,.95)
     qq <- quantile(na.omit(abs(diffs)), p=p)
     percErr <- abs(ee[[1]] - N) / N
-    qqPerc <- quantile(na.omit(percErr), p=p)
+    qqPerc <- 100 * quantile(na.omit(percErr), p=p)
     data.frame(`% of estimates within`=round(100 * p),
                `% Accuracy`=qqPerc,
                `Absolute Accuracy`=qq,
