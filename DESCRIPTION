@@ -9,7 +9,7 @@ Description: Implements user interfaces for log-linear models, bayesian model av
 License: GPL-2
 Imports: Rcapture
 Suggests: shiny, shinycssloaders, DT, caret, conting, ggplot2, reshape, MASS, VGAM, data.table, CARE1,
-    testthat
+    testthat, LCMCR
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.0
