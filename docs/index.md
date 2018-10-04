@@ -58,7 +58,7 @@ The first step toward performing an analysis is to load in the data. The applica
 ```
 represents an individual who was captured in the 2nd and 4th event, but not the 1st and 3rd.
 
-test3
+test4
 ![](./images/import_data.png)
 
 ## Log-linear Models
