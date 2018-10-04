@@ -33,7 +33,7 @@ To install the latest development version from the github repo run:
 # If devtools is not installed:
 # install.packages("devtools")
 
-devtools::install_github("fellstat/shinyrecap", depends="Suggests")
+devtools::install_github("fellstat/shinyrecap")
 
 ```
 

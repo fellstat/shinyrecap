@@ -5,7 +5,7 @@
 \alias{shinyrecap-package}
 \title{Shiny User Interface for Multiple Source Capture Recapture Models}
 \description{
-Shiny User Interface for Multiple Source Capture Recapture Models
+Implements user interfaces for log-linear models, bayesian model averaging and bayesian dirichlet process mixture models.
 }
 \author{
 Ian E. Fellows \email{ian@fellstat.com}

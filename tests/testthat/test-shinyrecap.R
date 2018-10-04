@@ -28,3 +28,4 @@ test_that("disaggregate", {
                                         1L, 1L, 1L, 1L, 1L, 1L, 1L)), row.names = c(NA, -68L), class = "data.frame")
   expect_equivalent(d2,d3)
 })
+

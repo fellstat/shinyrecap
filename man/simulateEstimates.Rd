@@ -26,7 +26,7 @@ Simulates capture re-capture estimates
 \examples{
 library(ggplot2)
 # Simulate estimates from the Mt model with no population heterogeneity
-ests <- simulateEstimates(30,500,c(.1,.1,.1))
+ests <- simulateEstimates(15,500,c(.1,.1,.1))
 
 # Simulate estimates from the Mth (Normal) model with no population heterogeneity.
 ests2 <- simulateEstimates(30,500,c(.1,.1,.1), htype="Normal")
