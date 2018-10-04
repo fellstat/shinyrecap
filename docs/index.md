@@ -26,9 +26,29 @@ The Log-linear and Bayesian latent class methods both provide mechanisms to deal
 
 If there is significant heterogeneity, the recommended approach is to stratify the data into subgroups with more uniform capture probability, calculate population size estimates for the subgroups, and add them together to get an overall estimate. For example, if age is highly related to probability of capture, split the data into young and old individuals. Then calculate the estimated population size for the young and old separately. The overall population size is then the sum of the two estimates.
 
-## Installation
+## Video Tutorial
 
-To install the latest development version from the github repo run:
+### [Link To Tutorial](https://youtu.be/PgmyUnFlo5Y)
+
+This is a tutorial for the analysis capabilities of the shinyrecap package.
+
+Data used:
+
+* https://fellstat.github.io/shinyrecap/data/brighton_total.csv
+* https://fellstat.github.io/shinyrecap/data/brighton_male.csv
+* https://fellstat.github.io/shinyrecap/data/brighton_female.csv
+* https://fellstat.github.io/shinyrecap/data/brighton_male_15_29.csv
+* https://fellstat.github.io/shinyrecap/data/brighton_male_30_44.csv
+* https://fellstat.github.io/shinyrecap/data/brighton_female_15_29.csv
+* https://fellstat.github.io/shinyrecap/data/brighton_female_30_44.csv
+
+Data reference:
+
+Hickman, M., Higgins, V., Hope, V., Bellis, M., Tilling, K., Walker, A., & Henry, J. (2004). Injecting drug use in Brighton, Liverpool, and London: best estimates of prevalence and coverage of public health indicators. Journal of Epidemiology & Community Health, 58(9), 766-771.
+
+## R Package Installation
+
+To install the latest development version from the github repo run the following in R:
 ```
 # If devtools is not installed:
 # install.packages("devtools")
@@ -58,7 +78,6 @@ The first step toward performing an analysis is to load in the data. The applica
 ```
 represents an individual who was captured in the 2nd and 4th event, but not the 1st and 3rd.
 
-test6
 ![](./images/import_data.png)
 
 ## Log-linear Models
