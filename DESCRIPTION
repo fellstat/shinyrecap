@@ -4,8 +4,8 @@ Title: Shiny User Interface for Multiple Source Capture Recapture Models
 Version: 0.1.0
 Author: Ian E. Fellows
 Maintainer: Ian E. Fellows <ian@fellstat.com>
-Description: Implements user interfaces for log-linear models, bayesian model averaging and 
-    bayesian dirichlet process mixture models.
+Description: Implements user interfaces for log-linear models, Bayesian model averaging and 
+    Bayesian Dirichlet process mixture models.
 License: MIT + file LICENCE
 Imports: Rcapture, shiny, shinycssloaders, conting, ggplot2, reshape, CARE1,
     dga, LCMCR, ipc, future, promises, coda,
