@@ -67,7 +67,7 @@ simulateCapture <- function(hetero, p){
 #' ests <- simulateEstimates(15,500,c(.1,.1,.1))
 #'
 #' # Simulate estimates from the Mth (Normal) model with no population heterogeneity.
-#' ests2 <- simulateEstimates(30,500,c(.1,.1,.1), htype="Normal")
+#' ests2 <- simulateEstimates(20,500,c(.1,.1,.1), htype="Normal")
 #'
 #' df <- data.frame(est = ests[[1]],type="Mt")
 #' df <- rbind(df, data.frame(est = ests2[[1]],type="Mth (Normal)"))
