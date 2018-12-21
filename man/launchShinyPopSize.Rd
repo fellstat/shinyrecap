@@ -12,3 +12,6 @@ launchShinyPopSize(app = c("estimation", "power"))
 \description{
 Launches the Shiny Application for Population Size
 }
+\details{
+The manual for this shiny application is located at https://fellstat.github.io/shinyrecap/
+}

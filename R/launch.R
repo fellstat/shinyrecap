@@ -1,6 +1,8 @@
 
 #' Launches the Shiny Application for Population Size
 #' @param app Which application to launch.
+#' @details
+#' The manual for this shiny application is located at https://fellstat.github.io/shinyrecap/
 #' @export
 launchShinyPopSize <- function(app=c("estimation","power")){
   if(app[1] == "power")
