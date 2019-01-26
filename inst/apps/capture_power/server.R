@@ -4,6 +4,7 @@ library(ggplot2)
 library(ipc)
 library(future)
 library(promises)
+library(shinyrecap)
 plan(multiprocess)
 
 shinyServer(function(input, output, session) {
