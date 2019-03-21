@@ -67,16 +67,61 @@ launchShinyPopSize()
 
 # Launch the power analysis application
 launchShinyPopSize("power")
+
+# Launch the an application to help format your data for analysis
+launchShinyPopSize("convert")
 ```
 
+## Data Formatting
 
-## Data Import
-
-The first step toward performing an analysis is to load in the data. The application supports delimited text formats such as comma separated values (csv). Each column should represent a capture event and each row should be a capture history. Optionally the last column may be the count of individuals with that particular capture history. "1" indicates capture, and "0" indicates not captured, so the history
+The analysis application works with data in "Capture History" format. Each column should represent a capture event and each row should be a capture history. Optionally the last column may be the count of individuals with that particular capture history. "1" indicates capture, and "0" indicates not captured, so the history
 ```
 0 1 0 1
 ```
-represents an individual who was captured in the 2nd and 4th event, but not the 1st and 3rd.
+represents an individual who was captured in the 2nd and 4th event, but not the 1st or 3rd. A properly structured 3 event CRC dataset would look something like:
+```
+V1	V2	V3	count
+1	  0	  0	  3
+0	  1	  0	  8
+1	  1	  0	  4
+0	  0	  1	  6
+1	  0	  1	  2
+0	  1	  1	  2
+1	  1	  1	  1
+```
+From the first row `1	  0	  0	  3`, wee see that there were 3 individuals captured at event 1, but not at the 2nd and 3rd events. There was 1 individual captured in all 3 events (row: `1	  1	  1	  1`).
+
+In many studies, particularly those in the epidemiological domain, don't collect data in this format. Rather, at each event, individual participation is recorded, along with information about whether they were captured in previous events. Thus, a 3 event CRC study would have three datasets. 
+
+At the first event we count the number of participants
+```
+count
+10
+```
+
+At the second event we count the number of participants, broken down by whether they participated in the first event.
+```
+V1  count
+Yes	5
+No	10
+```
+
+At the third event we count the number of participants, broken down by whether they participated in the first and/or second event.
+```
+V1  V2  count
+Yes	Yes	1
+No	Yes	2
+Yes	No	2
+No	No	6
+```
+
+Taken together, these three datasets are equivolent to the capture history dataset discussed above. `shinyrecap` provides a user interface to help perform the conversion in format.
+
+![](./images/convert.png)
+
+## Analysis Application Data Import
+
+The first step toward performing an analysis is to load in the data. The application supports delimited text formats such as comma separated values (csv). Each column should represent a capture event and each row should be a capture history. Optionally the last column may be the count of individuals with that particular capture history.
 
 ![](./images/import_data.png)
 
