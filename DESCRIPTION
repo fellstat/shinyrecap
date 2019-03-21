@@ -9,7 +9,7 @@ Description: Implements user interfaces for log-linear models, Bayesian model av
 License: MIT + file LICENCE
 Imports: Rcapture, shiny, shinycssloaders, conting, ggplot2, reshape, CARE1,
     dga, LCMCR, ipc, future, promises, coda,
-    testthat
+    testthat,rhandsontable
 URL: https://fellstat.github.io/shinyrecap/
 Encoding: UTF-8
 LazyData: true

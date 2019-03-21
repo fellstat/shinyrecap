@@ -1,6 +1,7 @@
 
 library(shinyrecap)
 library(shiny)
+library(rhandsontable)
 
 make_hot_table <- function(n){
     if(n==1){
