@@ -80,7 +80,7 @@ The analysis application works with data in "Capture History" format. Each colum
 ```
 represents an individual who was captured in the 2nd and 4th event, but not the 1st or 3rd. A properly structured 3 event CRC dataset would look something like:
 ```
-V1	V2	V3	count
+V1  V2  V3  count
 1	  0	  0	  3
 0	  1	  0	  8
 1	  1	  0	  4
@@ -102,20 +102,20 @@ count
 At the second event we count the number of participants, broken down by whether they participated in the first event.
 ```
 V1  count
-Yes	5
-No	10
+Yes 5
+No  10
 ```
 
 At the third event we count the number of participants, broken down by whether they participated in the first and/or second event.
 ```
 V1  V2  count
-Yes	Yes	1
-No	Yes	2
-Yes	No	2
-No	No	6
+Yes Yes 1
+No  Yes 2
+Yes No  2
+No  No  6
 ```
 
-Taken together, these three datasets are equivolent to the capture history dataset discussed above. `shinyrecap` provides a user interface to help perform the conversion in format.
+Taken together, these three datasets are equivalent to the capture history dataset discussed above. `shinyrecap` provides a user interface to help perform the conversion in format.
 
 ![](./images/convert.png)
 
