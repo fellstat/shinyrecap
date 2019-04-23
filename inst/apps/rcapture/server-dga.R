@@ -1,21 +1,4 @@
 serverDga <- function(input, output, session, getData){
-  dgaModel <- reactive({
-    if (is.null(getData())) {
-      return(NULL)
-    }
-    dat <- getData()
-    if (input$DataType == "Aggregate") {
-      dat <- disaggregate(dat[,-ncol(dat)], dat[[ncol(dat)]])
-    }
-    rec <- make.strata(dat, locations=rep("a", nrow(dat1)))$overlap.counts
-    rec <- array(rec, dim= rep(2,ncol(dat1)))
-    nmax <- input$dgaNMax
-    nmiss <- 0:nmax
-    data(graphs3)
-    ma <- bma.cr(rec, delta = 1/2^ncol(dat1), Nmissing = nmiss,graphs=graphs3)
-    NULL
-  })
-
   priorDist <- reactive({
     if( !is.null(getData())){
       dat <- getData()

@@ -4,7 +4,7 @@
 \alias{launchShinyPopSize}
 \title{Launches the Shiny Application for Population Size}
 \usage{
-launchShinyPopSize(app = c("estimation", "power"))
+launchShinyPopSize(app = c("estimation", "power", "convert"))
 }
 \arguments{
 \item{app}{Which application to launch.}
