@@ -4,10 +4,12 @@ library(ggplot2)
 library(ipc)
 library(future)
 library(promises)
+library(shinyhelper)
 library(shinyrecap)
 plan(multiprocess)
 
 shinyServer(function(input, output, session) {
+  observe_helpers()
 
   nLists <- reactiveVal(3)
   interruptor <- AsyncInterruptor$new()    # To signal STOP to the future
