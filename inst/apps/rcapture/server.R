@@ -17,6 +17,8 @@ data(graphs5)
 
 shinyServer(function(input, output, session) {
 
+  observe_helpers()
+
   getData <- serverImport(input, output, session)
 
   serverLogLinear(input, output, session, getData)

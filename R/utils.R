@@ -71,3 +71,14 @@ lcmcrSample <- function(object, burnin = 10000, samples = 1000, thinning = 10,
   N <- object$Get_Trace("n0") + object$n
   return(as.numeric(N))
 }
+
+
+
+#' A simple wrapper for shinyhelper::helper
+#' @param x The shiny object to decorate
+#' @param content the name of the help
+#' @param ... additional parameters for shinyhelper::helper
+#' @export
+srhelp <- function(x, content, ...){
+  shinyhelper::helper(x, ..., content=content, colour="lightgrey")
+}

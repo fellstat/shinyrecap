@@ -12,16 +12,16 @@ renderDga <- function() {
                      "Delta",
                      1,
                      min = 0,
-                     max = 1000000),
+                     max = 1000000) %>% srhelp("dgaPriorDelta"),
         hr(),
-        h4("Prior Population Size"),
+        h4("Prior Population Size") %>% srhelp("dgaPrior"),
         numericInput(
           "dgaNMax",
           "Maximum Population Size",
           100000,
           min = 0,
           max = 1000000
-        ),
+        ) %>% srhelp("dgaNMax"),
         radioButtons(
           "dgaPriorType",
           "
@@ -29,7 +29,7 @@ renderDga <- function() {
           choices = c("Non-informative" = "noninf",
                       "Log-normal" = "lnorm"),
           selected = "noninf"
-        ),
+        ) %>% srhelp("dgaPriorType"),
         conditionalPanel(
           "input.dgaPriorType == \"lnorm\"",
           numericInput(
@@ -38,21 +38,21 @@ renderDga <- function() {
             7000,
             min = 0,
             max = 1000000
-          ),
+          ) %>% srhelp("dgaPriorMedian"),
           numericInput(
             "dgaPrior90",
             "Prior: 90% Upper Bound",
             10000,
             min = 0,
             max = 1000000
-          )
+          ) %>% srhelp("dgaPrior90")
         ),
         hr(),
         checkboxInput(
           "dgaSaturated",
           "Include Saturated Model",
           FALSE
-        )
+        ) %>% srhelp("dgaSaturated")
       ),
       mainPanel(
         tabsetPanel(
@@ -74,14 +74,14 @@ renderDga <- function() {
             ),
             br(),
             h3("Posterior Summaries"),
-            withSpinner(tableOutput("dgaTable")),
+            withSpinner(tableOutput("dgaTable")) %>% srhelp("dgaTable"),
             br(),
             h3("Posterior Distribution"),
-            withSpinner(plotOutput("dgaPlot"))
+            withSpinner(plotOutput("dgaPlot")) %>% srhelp("dgaPlot")
           ),
           tabPanel(
             "Posterior Model Probabilities",
-            withSpinner(tableOutput("dgaModelPost"))
+            withSpinner(tableOutput("dgaModelPost")) %>% srhelp("dgaModelPost")
           )
         )
       )

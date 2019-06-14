@@ -6,7 +6,7 @@ renderLogLinearSidebar <- function() {
     br(),
     radioButtons(
       "OutputSelect",
-      "Select Output (various assumptions):",
+      "Select Output:",
       choices = c(
         "M0 (No variation in capture probabilities)" = "M0",
         "Mt (Capture probability vary by time)" = "Mt",
@@ -14,7 +14,7 @@ renderLogLinearSidebar <- function() {
         "Mth (Both Mt and Mh)" = "Mth"
       ),
       selected = 'M0'
-    ),
+    ) %>% srhelp("OutputSelect"),
     conditionalPanel(
       "input.OutputSelect == 'Mh' || input.OutputSelect == 'Mth'",
       radioButtons(
@@ -28,7 +28,7 @@ renderLogLinearSidebar <- function() {
           "Normal" = "Normal"
         ),
         selected = 'Chao'
-      )
+      ) %>% srhelp("Hetero")
     ),
     div(style = "height:150px;")
   )
@@ -42,7 +42,7 @@ renderLogLinear <- function() {
       tabPanel(
         "Model Comparison",
         h4("Population Size Estimates by Model:"),
-        tableOutput("Abund"),
+        tableOutput("Abund") %>% srhelp("Abund"),
         p("M0 : All captures have the same probability and individuals are uniform."),
         p("Mt : Captures may have different probabilities and individuals are uniform."),
         p("Mh : All captures have the same probability and individuals may be heterogeneous."),
@@ -63,7 +63,7 @@ renderLogLinear <- function() {
       tabPanel(
         "Desciptives",
         verbatimTextOutput("FreqStat"),
-        plotOutput("HetPlot"),
+        plotOutput("HetPlot") %>% srhelp("HetPlot"),
         tags$hr()
       )
     )

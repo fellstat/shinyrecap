@@ -34,13 +34,21 @@ make_entry <- function(n){
     )
 }
 
+
+srhelp <- function(x, ...){
+    shinyhelper::helper(x, ..., colour="lightgrey")
+}
+
 library(shiny)
 library(rhandsontable)
+library(shinyhelper)
+library(magrittr)
+
 shinyUI(fluidPage(
 
     # Application title
     shiny::wellPanel(
-    titlePanel("Convert Unique Event Indentifier Format Data Into Capture History Format"),
+    titlePanel("Convert Unique Event Indentifier Format Data Into Capture History Format") %>% srhelp(content="main"),
     br(),
     shiny::fluidRow(
         column(4, align="center", offset = 4,

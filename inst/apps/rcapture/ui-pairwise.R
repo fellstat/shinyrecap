@@ -5,6 +5,6 @@ renderPairwise <- function(){
     "Pairwise",
     br(),
     h3("Pairwise Analysis"),
-    tableOutput("pairwise")
+    tableOutput("pairwise") %>% srhelp("pairwise")
   )
 }

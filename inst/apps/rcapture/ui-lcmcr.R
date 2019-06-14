@@ -6,7 +6,7 @@ renderLcmcr <- function(){
     "Bayesian Latent Class",
     sidebarLayout(
       sidebarPanel(
-        h4("Prior on # of Groups (Stick Breaking Process)"),
+        h4("Prior on # of Groups") %>% srhelp("blcPrior"),
         numericInput(
           "lcmcrK",
           "Maximum Number of Groups",
@@ -29,7 +29,7 @@ renderLcmcr <- function(){
           max = 1000000
         ),
         hr(),
-        h4("MCMC Sampling Parameters"),
+        h4("MCMC Sampling") %>% srhelp("blcMCMC"),
         numericInput(
           "lcmcrSamples",
           "# of Samples",
@@ -68,15 +68,15 @@ renderLcmcr <- function(){
               )
               ),
             h3("Posterior Summaries"),
-            tableOutput("lcmcrTable"),
+            tableOutput("lcmcrTable") %>% srhelp("lcmcrTable"),
             br(),
             h3("Posterior Distribution"),
-            plotOutput("lcmcrPlot")
+            plotOutput("lcmcrPlot") %>% srhelp("lcmcrPlot")
           ),
           tabPanel(
             "Diagnostics",
-            plotOutput("lcmcrTracePlot"),
-            textOutput("lcmcrEssText"),
+            plotOutput("lcmcrTracePlot") %>% srhelp("lcmcrTracePlot"),
+            textOutput("lcmcrEssText") %>% srhelp("lcmcrEssText"),
             tags$head(
               tags$style("#lcmcrEssText{font-size: 20px;}"
               )

@@ -14,13 +14,13 @@ The basic idea behind capture recapture modeling is to run two or more surveys (
 There are two fundamental concerns that arise capture recapture:
 
 1. **List Dependence:** Ideally one would like to have all capture events be independent draws from the population. In many cases however, some capture events may be related. For example, in a city wide survey of injection drug users, it might happen that the first two capture events were more heavily concentrated in one area of the city than the third event.
-2. **Capture Heterogineity:** Ideally, each individual in the population has the same probability of being captured; however, some subgroups may have increased propensity for capture. For example, perhaps younger men who have sex with men are more likely to be captured at a venue (e.g. nightclub).
+2. **Capture Heterogeneity:** Ideally, each individual in the population has the same probability of being captured; however, some subgroups may have increased propensity for capture. For example, perhaps younger men who have sex with men are more likely to be captured at a venue (e.g. nightclub).
 
 #### Dealing With List Dependence
 
 List dependence is best dealt with using the Bayesian model averaging method, which will automatically detect potential dependencies.
 
-#### Dealing With Heterogineity
+#### Dealing With Heterogeneity
 
 The Log-linear and Bayesian latent class methods both provide mechanisms to deal with individual heterogeneity. These are covered in more detail below. However, including heterogeneity in your model (regardless of the method) will greatly increase the uncertainty of your estimates, and it is often difficult to determine which of the potential models to use.
 
@@ -137,9 +137,9 @@ This application supports four classes of log-linear models of varying model com
 When heterogeneity is present, there are different forms that this heterogeneity can take.
 
 * **Normal:** The log odds of capture follows a Normal distribution.
-* **Darrosh:** The log odds of capture _amoung those who were not captured_ follows a Normal distribution.
-* **Poisson:** The log odds of capture _amoung those who were not captured_ follows a Poisson distribution.
-* **Gamma:** The log odds of capture _amoung those who were not captured_ follows a Gamma distribution.
+* **Darrosh:** The log odds of capture _among those who were not captured_ follows a Normal distribution.
+* **Poisson:** The log odds of capture _among those who were not captured_ follows a Poisson distribution.
+* **Gamma:** The log odds of capture _among those who were not captured_ follows a Gamma distribution.
 
 Selection between models is often done using either the AIC or BIC. For these, lower numbers indicate a "better" model fit. 
 

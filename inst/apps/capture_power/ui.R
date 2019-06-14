@@ -2,7 +2,7 @@
 
 library(shiny)
 library(shinyhelper)
-
+library(magrittr)
 
 srhelp <- function(x, ...){
   helper(x, ..., colour="lightgrey")

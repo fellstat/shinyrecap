@@ -25,6 +25,7 @@ make_hot_table <- function(n){
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
+    observe_helpers()
     output[[paste0("hot", 1)]] <- renderRHandsontable(make_hot_table(1))
     output[[paste0("hot", 2)]] <- renderRHandsontable(make_hot_table(2))
     output[[paste0("hot", 3)]] <- renderRHandsontable(make_hot_table(3))
