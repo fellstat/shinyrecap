@@ -41,6 +41,8 @@ serverLogLinear <- function(input, output, session, getData){
                   Gamma3.5 = "Gamma")
       updateRadioButtons(session, "Hetero", selected = h)
     }
+    results[,1] <- as.integer(round(results[,1]))
+    results[,2] <- as.integer(round(results[,2]))
     results
   }, rownames = TRUE)
 
@@ -77,7 +79,7 @@ serverLogLinear <- function(input, output, session, getData){
       ci <- ci$CI[1:3]
     names(ci)<-
       c("Population Size", "Lower 95%", "Upper 95%")
-    print(ci)
+    print(round(ci))
   })
 
 

@@ -81,8 +81,8 @@ serverLcmcr <- function(input, output, session, getData){
     quant <- quantile(post, c(0.50, .025, 0.975))
     result <- data.frame(mean(post), quant[1], quant[2], quant[3])
     names(result) <- c("Mean","Median","95% Lower","95% Upper")
-    result
-  })
+    round(result)
+  }, digits=0)
 
   output$lcmcrPlot <- renderPlot({
     if(is.null(resultVal()))

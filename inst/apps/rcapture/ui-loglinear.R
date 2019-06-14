@@ -61,7 +61,7 @@ renderLogLinear <- function() {
         )
       ),
       tabPanel(
-        "Desciptives",
+        "Descriptives",
         verbatimTextOutput("FreqStat"),
         plotOutput("HetPlot") %>% srhelp("HetPlot"),
         tags$hr()

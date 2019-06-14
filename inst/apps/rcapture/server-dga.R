@@ -174,8 +174,8 @@ serverDga <- function(input, output, session, getData){
     upper <- x[which(cumsum(postN) > .975)[1]]
     result <- data.frame(mn, med, lower, upper)
     names(result) <- c("Mean","Median","95% Lower","95% Upper")
-    result
-  })
+    round(result)
+  }, digits=0)
 
   output$dgaPlot <- renderPlot({
     dga <- dga()
@@ -224,6 +224,7 @@ serverDga <- function(input, output, session, getData){
       p <- p / sum(p)
       sum(p * x)
     })
+    means <- as.integer(round(means))
     mp <- mp / sum(mp)
     mp <- round(mp * 100, 3)
 
