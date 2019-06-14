@@ -24,7 +24,27 @@ renderIntroPanel <- function() {
           style = "text-align:justify;"
           )
       ),
-
+      tags$h4("Log-Linear Models"),
+      tags$p(
+        p(
+          'Log-linear models are a classic methodology for the analysis of multiple source capture recapture data. Variants are implemented that allow for varying capture probabilities across events, and heterogeneous capture probabilities among members of the population.',
+          style = "text-align:justify;"
+        )
+      ),
+      tags$h4("Bayesian Model Averaging"),
+      tags$p(
+        p(
+          'This method allows the analyst to flexibly account for list dependency by creating models for all possible dependencies, and averaging over them in a way that is proportional to the probability that the dependence is correct.',
+          style = "text-align:justify;"
+        )
+      ),
+      tags$h4("Bayesian Latent Class"),
+      tags$p(
+        p(
+          'The Bayesian latent class model deals with heterogeneity in a novel way. It posits that there are unobserved subgroups in the data with different capture probabilities for each capture event. The number of these groups and their probabilities are unknown. The algorithm uses a Bayesian framework to estimates these, along with the population size.',
+          style = "text-align:justify;"
+        )
+      ),
       tags$hr(),
       h3(
         tags$a("Online Manual",

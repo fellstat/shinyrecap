@@ -20,7 +20,7 @@ shinyUI(
     renderIntroPanel(),
     renderImportDataPanel(),
     tabPanel(
-      "Analysis",
+      p("Analysis"),
       tabsetPanel(
         renderLogLinear(),
         renderDga(),
