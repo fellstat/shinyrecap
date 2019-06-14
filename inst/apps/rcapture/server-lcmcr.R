@@ -79,7 +79,8 @@ serverLcmcr <- function(input, output, session, getData){
       return(NULL)
     post <- resultVal()$N
     quant <- quantile(post, c(0.50, .025, 0.975))
-    result <- data.frame(mean(post), quant[1], quant[2], quant[3])
+    hdint <- HDInterval::hdi(post)
+    result <- data.frame(mean(post), quant[1], hdint[1], hdint[2])
     names(result) <- c("Mean","Median","95% Lower","95% Upper")
     round(result)
   }, digits=0)

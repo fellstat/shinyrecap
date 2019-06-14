@@ -170,8 +170,20 @@ serverDga <- function(input, output, session, getData){
     x <- dga$prior$x
     mn <- sum(x * postN)
     med <- x[which(cumsum(postN) > .5)[1]]
-    lower <- x[which(cumsum(postN) > .025)[1]]
-    upper <- x[which(cumsum(postN) > .975)[1]]
+
+    # HDI
+    opt <- optimize(
+      function(cut){
+        abs(.05 - sum(postN*(postN <= cut)))
+      },
+      interval = c(0,max(postN))
+    )
+    inInterval <- which(postN > opt$minimum)
+    lower <- x[inInterval[1]]
+    upper <- x[inInterval[length(inInterval)]]
+
+    #lower <- x[which(cumsum(postN) > .025)[1]]
+    #upper <- x[which(cumsum(postN) > .975)[1]]
     result <- data.frame(mn, med, lower, upper)
     names(result) <- c("Mean","Median","95% Lower","95% Upper")
     round(result)
