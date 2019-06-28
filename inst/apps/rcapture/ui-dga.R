@@ -82,6 +82,26 @@ renderDga <- function() {
           tabPanel(
             "Posterior Model Probabilities",
             withSpinner(tableOutput("dgaModelPost")) %>% srhelp("dgaModelPost")
+          ),
+          tabPanel(
+            "Report",
+            radioButtons(
+              "dgaReportFormat",
+              "Report Format:",
+              choices = c(
+                "HTML" = "html_document",
+                "Word" = "word_document",
+                "PDF" = "pdf_document"
+              ),
+              selected = 'html_document'
+            ),
+            checkboxInput("dgaReportCode","Include R Code",TRUE),
+            checkboxGroupInput("dgaReportCheckBox",
+                               "Report Contents",
+                               c("Prior","Posterior","Model Summaries"),
+                               c("Prior","Posterior","Model Summaries")
+            ),
+            downloadButton("dgaDownloadReport", "Download")
           )
         )
       )

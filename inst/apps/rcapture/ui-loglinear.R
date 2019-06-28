@@ -65,6 +65,26 @@ renderLogLinear <- function() {
         verbatimTextOutput("FreqStat"),
         plotOutput("HetPlot") %>% srhelp("HetPlot"),
         tags$hr()
+      ),
+      tabPanel(
+        "Report",
+        radioButtons(
+          "llReportFormat",
+          "Report Format:",
+          choices = c(
+            "HTML" = "html_document",
+            "Word" = "word_document",
+            "PDF" = "pdf_document"
+          ),
+          selected = 'html_document'
+        ),
+        checkboxInput("llReportCode","Include R Code",TRUE),
+        checkboxGroupInput("llReportCheckBox",
+                           "Report Contents",
+                           c("Model Comparison","Model Selection","Descriptives"),
+                           c("Model Comparison","Model Selection","Descriptives")
+        ),
+        downloadButton("llDownloadReport", "Download")
       )
     )
   )

@@ -81,6 +81,26 @@ renderLcmcr <- function(){
               tags$style("#lcmcrEssText{font-size: 20px;}"
               )
             )
+          ),
+          tabPanel(
+            "Report",
+            radioButtons(
+              "lcmcrReportFormat",
+              "Report Format:",
+              choices = c(
+                "HTML" = "html_document",
+                "Word" = "word_document",
+                "PDF" = "pdf_document"
+              ),
+              selected = 'html_document'
+            ),
+            checkboxInput("lcmcrReportCode","Include R Code",TRUE),
+            checkboxGroupInput("lcmcrReportCheckBox",
+                               "Report Contents",
+                               c("Posterior","Diagnostics"),
+                               c("Posterior","Diagnostics")
+            ),
+            downloadButton("lcmcrDownloadReport", "Download")
           )
         )
       )
