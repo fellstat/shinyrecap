@@ -41,6 +41,7 @@ shinyServer(function(input, output) {
 
         datasets <- list()
         for(i in 1:input$ncap){
+            browser()
             df <- hot_to_r(input[[paste0("hot", i)]])
             if(anyNA(df[,ncol(df)])){
                 tab(NULL)

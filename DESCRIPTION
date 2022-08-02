@@ -7,7 +7,7 @@ Maintainer: Ian E. Fellows <ian@fellstat.com>
 Description: Implements user interfaces for log-linear models, Bayesian model averaging and 
     Bayesian Dirichlet process mixture models.
 License: MIT + file LICENCE
-Imports: Rcapture, shiny, shinycssloaders, conting, ggplot2, reshape, CARE1,
+Imports: Rcapture, shiny, shinycssloaders, ggplot2, reshape, 
     dga, LCMCR, ipc, future, promises, coda,
     testthat,rhandsontable, shinyhelper, magrittr, HDInterval, shinyjs, rmarkdown, knitr
 URL: https://fellstat.github.io/shinyrecap/

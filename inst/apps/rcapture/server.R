@@ -6,7 +6,7 @@ source("server-pairwise.R")
 source("server-dga.R")
 source("server-lcmcr.R")
 
-plan(multiprocess)
+plan(multisession)
 #plan(sequential)
 
 data(graphs3)
