@@ -1,4 +1,25 @@
 serverDga <- function(input, output, session, getData){
+
+  plot_dga_post <-function (weights, N)
+  {
+    #wts <- apply(weights, 1, sum)
+    #df <- do.call("rbind",lapply(1:nrow(weights), function(i){
+    #  data.frame(NN=N,dens = weights[i, ], lwd = wts[i] * 3,i=i)
+    #}))
+    df2 <- data.frame(N=N,d=apply(weights, 2, sum))
+    ggplot() +
+      #geom_line(aes(x=NN,y=dens,group=i, linewidth=lwd,linetype="By Model"), data=df) +
+      #scale_linewidth_continuous(range=c(min(wts),max(wts)) * 2, guide=NULL) +
+      geom_line(aes(x=N,y=d, linetype="Averaged"), linewidth=2,data=df2) +
+      scale_linetype(name="Posterior:", guide="legend") +
+      theme_bw() +
+      theme(legend.position = "bottom") +
+      ylab("Density") +
+      xlab("N") +
+      guides(linetype=guide_legend(override.aes = list(linewidth=1)))
+  }
+
+
   priorDist <- reactive({
     if( !is.null(getData())){
       dat <- getData()
@@ -132,15 +153,18 @@ serverDga <- function(input, output, session, getData){
     nmax <- input$dgaNMax - nobs
     delta <- input$dgaPriorDelta
     prior <- priorDist()
-    future({
-      x <- prior$x
-      post <- bma.cr(rec,
-                     delta=delta,
-                     Nmissing=x - nobs,
-                     logprior = log(prior$values),
-                     graphs = graphs)
-      list(prior=prior, post=post)
-    })
+    #future(
+    #  {
+        x <- prior$x
+        post <- bma.cr(rec,
+                       delta=delta,
+                       Nmissing=x - nobs,
+                       logprior = log(prior$values),
+                       graphs = graphs)
+        list(prior=prior, post=post)
+    #  },
+    #  seed = TRUE
+    #)
   })
 
   output$dgaSaturatedWarning <- renderText({
@@ -209,7 +233,10 @@ serverDga <- function(input, output, session, getData){
     postN <- colSums(post)
     postN <- postN / sum(postN)
     ind <- cumsum(postN)  < .995
-    plotPosteriorN(post[,ind], x[ind])
+    #browser()
+    #plot(1:10)
+    plot_dga_post(post[,ind], x[ind])
+    #plotPosteriorN(post[,ind], x[ind])
   })
 
   output$dgaModelPost <- renderTable({
