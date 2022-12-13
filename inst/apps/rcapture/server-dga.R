@@ -19,7 +19,6 @@ serverDga <- function(input, output, session, getData){
       guides(linetype=guide_legend(override.aes = list(linewidth=1)))
   }
 
-
   priorDist <- reactive({
     if( !is.null(getData())){
       dat <- getData()
