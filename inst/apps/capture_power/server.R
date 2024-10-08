@@ -6,7 +6,7 @@ library(future)
 library(promises)
 library(shinyhelper)
 library(shinyrecap)
-plan(multiprocess)
+plan(multisession)
 
 shinyServer(function(input, output, session) {
   observe_helpers()
