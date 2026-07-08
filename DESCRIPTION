@@ -1,8 +1,11 @@
 Package: shinyrecap
 Type: Package
 Title: Shiny User Interface for Multiple Source Capture Recapture Models
-Version: 0.1.0
-Author: Ian E. Fellows
+Version: 0.2.0
+Authors@R: person(given = c("Ian", "E."),
+                    family = "Fellows",
+                    role = c("aut", "cre"),
+                    email = "ian@fellstat.com")
 Maintainer: Ian E. Fellows <ian@fellstat.com>
 Description: Implements user interfaces for log-linear models, Bayesian model averaging and 
     Bayesian Dirichlet process mixture models.
