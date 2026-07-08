@@ -53,15 +53,26 @@ serverPairwise <- function(input, output, session, getData){
 
 ```{r}
     library(shinyrecap)
-    library(CARE1)
     dat <- getData()
     if (',objToString(input$DataType) ,' == "Aggregate") {
       dat <- disaggregate(dat[,-ncol(dat)], dat[[ncol(dat)]])
     }
-    result3 <- estN.pair(as.record(dat))
-    result3 <- result3[,-2]
-    colnames(result3)<- c("Population Size", "se", "95% CI Lower","95% CI Upper")
-    result3 %>% knitr::kable(digits=0)
+    result <- data.frame(c(),c(),c(),c())
+    for(i in 1:(ncol(dat)-1)){
+      for(j in (i+1):ncol(dat)){
+        n1 <- sum(dat[[i]])
+        n2 <- sum(dat[[j]])
+        m2 <- sum(dat[[i]] + dat[[j]] > 1.5)
+        result <- rbind(
+          result,
+           cbind(
+             paste0("events_",i,"_",j),
+             round(pair_n(n1,n2,m2))
+             )
+          )
+      }
+    }
+    result %>% knitr::kable()
 ```
 ')
   }

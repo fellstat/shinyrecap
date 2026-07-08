@@ -4,8 +4,15 @@
 \alias{simulateEstimates}
 \title{Simulates capture re-capture estimates}
 \usage{
-simulateEstimates(nsim, N, p, htype = "None", heteroPerc = 1,
-  monitorFunc = function(i) { })
+simulateEstimates(
+  nsim,
+  N,
+  p,
+  htype = "None",
+  heteroPerc = 1,
+  monitorFunc = function(i) {
+ }
+)
 }
 \arguments{
 \item{nsim}{number of simulations}

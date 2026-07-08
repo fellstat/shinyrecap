@@ -2,10 +2,18 @@
 % Please edit documentation in R/package.R
 \docType{package}
 \name{shinyrecap-package}
+\alias{shinyrecap}
 \alias{shinyrecap-package}
 \title{Shiny User Interface for Multiple Source Capture Recapture Models}
 \description{
 Implements user interfaces for log-linear models, bayesian model averaging and bayesian dirichlet process mixture models.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://fellstat.github.io/shinyrecap/}
+}
+
 }
 \author{
 Ian E. Fellows \email{ian@fellstat.com}

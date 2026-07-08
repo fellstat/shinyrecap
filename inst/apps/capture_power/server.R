@@ -18,7 +18,7 @@ shinyServer(function(input, output, session) {
 
   output$capSizes <- renderUI({
     ipts <- lapply(1:nLists(), function(i) {
-      numericInput(paste0("n",i),NA,NA, min=1, max=input$N - 1, step=1)
+      numericInput(paste0("n",i),paste0("Capture ", i),NA, min=1, max=input$N - 1, step=1)
     })
     do.call(tagList, ipts)
   })
@@ -63,16 +63,17 @@ shinyServer(function(input, output, session) {
 
     #Run simulations
     progress <- AsyncProgress$new(session, message="Simulating...")
+    htype <- input$htype
     fut <- future({
       p <- n / N
       func <- function(i) {
         interruptor$execInterrupts()
         progress$inc(1/nsim)
       }
-      ee <- simulateEstimates(nsim, N, p, input$htype,  heteroPerc=het, monitorFunc = func)
+      ee <- simulateEstimates(nsim, N, p, htype,  heteroPerc=het, monitorFunc = func)
       attr(ee,"N") <- N
       ee
-    }) %...>% sims
+    }, seed=TRUE) %...>% sims
 
     # Show notification on error or user interrupt
     fut <- catch(fut,
@@ -116,7 +117,7 @@ shinyServer(function(input, output, session) {
     if(is.null(sims())) return(NULL)
     ee <- sims()
     N <- attr(ee, "N")
-    p <- qplot(na.omit(ee[[1]]), bins=100) +
+    p <- ggplot() + geom_histogram(aes(x=na.omit(ee[[1]])), bins=100) +
       geom_vline(xintercept = N, color="red") +
       xlab("Simulated Estimates")
     print(p)
@@ -138,8 +139,8 @@ shinyServer(function(input, output, session) {
       samps$capture[(N * (i-1) + 1):(N*i)] <- i
     }
     samps$capture <- as.factor(samps$capture)
-    pl <- qplot(x=probCap + rnorm(length(probCap), sd=.000001),
-                color=capture,geom="density",
+    pl <- ggplot() + geom_density(aes(x=probCap + rnorm(length(probCap), sd=.000001),
+                color=capture),#geom="density",
                 data=samps) +
       xlab("Individual probability of capture") +
       xlim(c(0,max(samps$probCap)*1.1))

@@ -4,9 +4,17 @@
 \alias{lcmcrSample}
 \title{Perform LCMCR sampling with a monitor function}
 \usage{
-lcmcrSample(object, burnin = 10000, samples = 1000, thinning = 10,
-  clear_buffer = FALSE, output = TRUE, nMonitorBreaks = 100,
-  monitorFunc = function(subs, tot) { })
+lcmcrSample(
+  object,
+  burnin = 10000,
+  samples = 1000,
+  thinning = 10,
+  clear_buffer = FALSE,
+  output = TRUE,
+  nMonitorBreaks = 100,
+  monitorFunc = function(subs, tot) {
+ }
+)
 }
 \arguments{
 \item{object}{the samples}
